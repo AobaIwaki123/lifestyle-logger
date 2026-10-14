@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LifestyleLogDay",
+  "description": "Daily lifestyle, activity, and reflection log.",
+  "type": "object",
+  "required": ["date", "summary", "events", "decisions", "dialogue_topics"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-line high-level summary of the day."
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "timestamp", "category", "title", "details"],
+        "properties": {
+          "id": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "category": {
+            "type": "string",
+            "enum": ["fieldwork", "exercise", "culture", "communication", "rest", "work", "other"]
+          },
+          "location": { "type": "string" },
+          "title": { "type": "string" },
+          "details": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "metrics": { "type": "object" }
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "timestamp", "topic", "context", "decision"],
+        "properties": {
+          "id": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "topic": { "type": "string" },
+          "context": { "type": "string" },
+          "decision": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "dialogue_topics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "topic", "takeaways"],
+        "properties": {
+          "id": { "type": "string" },
+          "topic": { "type": "string" },
+          "takeaways": { "type": "array", "items": { "type": "string" } },
+          "notes_synced": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}
