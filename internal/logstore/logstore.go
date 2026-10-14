@@ -66,6 +66,9 @@ type Store struct {
 
 // New returns a store rooted at root.
 func New(root string) Store {
+	if strings.TrimSpace(root) == "" {
+		return Store{}
+	}
 	return Store{Root: filepath.Clean(root)}
 }
 
@@ -75,7 +78,7 @@ func (s Store) DailyPath(date string) (string, error) {
 	if err != nil || parsed.Format(dateLayout) != date {
 		return "", fmt.Errorf("invalid date %q: expected YYYY-MM-DD", date)
 	}
-	if s.Root == "" || s.Root == "." {
+	if s.Root == "" {
 		return "", errors.New("data directory must not be empty")
 	}
 	return filepath.Join(s.Root, date[:4], date[5:7], date+".json"), nil
@@ -232,9 +235,6 @@ func validateDecision(decision Decision) error {
 func validateTopic(topic DialogueTopic) error {
 	if err := requireFields(map[string]string{"id": topic.ID, "topic": topic.Topic}); err != nil {
 		return err
-	}
-	if len(topic.Takeaways) == 0 {
-		return errors.New("takeaways must not be empty")
 	}
 	return nil
 }
